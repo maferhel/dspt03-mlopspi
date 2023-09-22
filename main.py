@@ -102,67 +102,67 @@ df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  e
 
 # 4. Funcion top 5 de usuarios con más horas de juego.
 
-def userforgenre(genero: str, df_genre_def: pd.DataFrame):
-    horas_por_usuario = {}
-    for index, row in df_genre_def.iterrows():
-        generos = literal_eval(row['genres'])
-        if genero in generos:
-            user_id = row['user_id']
-            playtime_forever = row['playtime_forever']
-            if user_id in horas_por_usuario:
-                horas_por_usuario[user_id] += playtime_forever
-            else:
-                horas_por_usuario[user_id] = playtime_forever
-    top_usuarios = sorted(horas_por_usuario.items(), key=lambda item: item[1], reverse=True)[:5]
+#def userforgenre(genero: str, df_genre_def: pd.DataFrame):
+    "horas_por_usuario = {}
+    "for index, row in df_genre_def.iterrows():
+        "generos = literal_eval(row['genres'])
+        "if genero in generos:
+            #user_id = row['user_id']
+            #playtime_forever = row['playtime_forever']
+            #if user_id in horas_por_usuario:
+                #horas_por_usuario[user_id] += playtime_forever
+            #else:
+                #horas_por_usuario[user_id] = playtime_forever
+    #top_usuarios = sorted(horas_por_usuario.items(), key=lambda item: item[1], reverse=True)[:5]
 
-    resultados = []
-    for user_id, horas in top_usuarios:
-        user_url = df_genre_def[df_genre_def['user_id'] == user_id]['user_url'].values[0]
-        resultados.append({'user_id': user_id, 'horas_de_juego': horas, 'user_url': user_url})
+    #resultados = []
+    #for user_id, horas in top_usuarios:
+        #user_url = df_genre_def[df_genre_def['user_id'] == user_id]['user_url'].values[0]
+        #resultados.append({'user_id': user_id, 'horas_de_juego': horas, 'user_url': user_url})
 
-    return resultados
+    #return resultados
 
 # Clase de modelo para recibir los parámetros de entrada
-class GenreQuery(BaseModel):
-    genero: str
+#class GenreQuery(BaseModel):
+    #genero: str
 
 # Ruta para la función userforgenre
-@app.get("/userforgenre")
-async def get_top_users_by_genre(genero: str = Query(..., title="Género a consultar")):
-    top_usuarios = userforgenre(genero, df_genre_def)
-    return top_usuarios
+#@app.get("/userforgenre")
+#async def get_top_users_by_genre(genero: str = Query(..., title="Género a consultar")):
+    #top_usuarios = userforgenre(genero, df_genre_def)
+    #return top_usuarios
 
 # --------------------------------
 
 # 5. Funcion contenido por desarrollador.
 
-#def developer(desarrollador: str, df_developer: pd.DataFrame):
-    #df_developer['release_date'] = pd.to_datetime(df_developer['release_date'], errors='coerce')
-    #df_filtered = df_developer[df_developer['developer'] == desarrollador]
-    #df_filtered = df_filtered.dropna(subset=['release_date'])
+def developer(desarrollador: str, df_developer: pd.DataFrame):
+    df_developer['release_date'] = pd.to_datetime(df_developer['release_date'], errors='coerce')
+    df_filtered = df_developer[df_developer['developer'] == desarrollador]
+    df_filtered = df_filtered.dropna(subset=['release_date'])
 
-    #result_data = []
+    result_data = []
 
-    #for year in range(df_filtered['release_date'].min().year, df_filtered['release_date'].max().year + 1):
-        #year_items = len(df_filtered[df_filtered['release_date'].dt.year == year])
-        #year_free_items = len(df_filtered[(df_filtered['release_date'].dt.year == year) & (df_filtered['price'] == 0)])
+    for year in range(df_filtered['release_date'].min().year, df_filtered['release_date'].max().year + 1):
+        year_items = len(df_filtered[df_filtered['release_date'].dt.year == year])
+        year_free_items = len(df_filtered[(df_filtered['release_date'].dt.year == year) & (df_filtered['price'] == 0)])
 
-        #if year_items > 0:
-            #free_percentage = (year_free_items / year_items) * 100
-        #else:
-            #free_percentage = 0
+        if year_items > 0:
+            free_percentage = (year_free_items / year_items) * 100
+        else:
+            free_percentage = 0
 
-        #result_data.append({'Año': year, 'Cantidad de Ítems': year_items, 'Contenido Free': f'{free_percentage:.0f}%'})
+        result_data.append({'Año': year, 'Cantidad de Ítems': year_items, 'Contenido Free': f'{free_percentage:.0f}%'})
 
-    #result_df = pd.DataFrame(result_data)
+    result_df = pd.DataFrame(result_data)
 
-    #return result_df.to_dict(orient='records')
+    return result_df.to_dict(orient='records')
 
 # Ruta para la función developer
-#@app.get("/developer")
-#async def get_developer_stats(desarrollador: str = Query(..., title="Nombre del Desarrollador")):
-    #resultado = developer(desarrollador, df_developer)
-    #return resultado
+@app.get("/developer")
+async def get_developer_stats(desarrollador: str = Query(..., title="Nombre del Desarrollador")):
+    resultado = developer(desarrollador, df_developer)
+    return resultado
 
 # --------------------------------
 
