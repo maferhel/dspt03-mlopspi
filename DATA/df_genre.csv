@@ -1,4 +1,4 @@
-user_id,item_id,item_name,playtime_forever,item_id,genres
+user_id,item_id,item_name,playtime_forever,item_id.1,genres
 76561197970982479,10,Counter-Strike,6,761140.0,"['Action', 'Casual', 'Indie', 'Simulation', 'Strategy']"
 76561197970982479,20,Team Fortress Classic,0,643980.0,"['Free to Play', 'Indie', 'RPG', 'Strategy']"
 76561197970982479,30,Day of Defeat,7,670290.0,"['Casual', 'Free to Play', 'Indie', 'Simulation', 'Sports']"

@@ -5,3 +5,6 @@ uvicorn
 matplotlib
 wordcloud
 scikit-learn
+missingno
+typing
+pydantic
