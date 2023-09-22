@@ -168,42 +168,42 @@ df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  e
 
 # 6. Funcion cantidad de reseñas por año de lanzamiento.
 
-def sentiment_analysis(año: int, df_sentimiento: pd.DataFrame):
-    df_sentimiento['release_date'] = pd.to_datetime(df_sentimiento['release_date'], errors='coerce')
-    df_reviews_filtered = df_sentimiento[df_sentimiento['release_date'].dt.year == año]
-    sentiment_counts = df_reviews_filtered['sentiment_analysis'].value_counts()
-    sentiment_dict = {
-        'Negative': sentiment_counts.get(0, 0),
-        'Neutral': sentiment_counts.get(1, 0),
-        'Positive': sentiment_counts.get(2, 0)
-    }
+#def sentiment_analysis(año: int, df_sentimiento: pd.DataFrame):
+    #df_sentimiento['release_date'] = pd.to_datetime(df_sentimiento['release_date'], errors='coerce')
+    #df_reviews_filtered = df_sentimiento[df_sentimiento['release_date'].dt.year == año]
+    #sentiment_counts = df_reviews_filtered['sentiment_analysis'].value_counts()
+    #sentiment_dict = {
+        #'Negative': sentiment_counts.get(0, 0),
+        #'Neutral': sentiment_counts.get(1, 0),
+        #'Positive': sentiment_counts.get(2, 0)
+    #}
 
-    return sentiment_dict
+    #return sentiment_dict
 
 # Ruta para la función sentiment_analysis
-@app.get("/sentiment")
-async def get_sentiment_analysis(año: int = Query(..., title="Año")):
-    resultado = sentiment_analysis(año, df_sentimiento)
-    return resultado
+#@app.get("/sentiment")
+#async def get_sentiment_analysis(año: int = Query(..., title="Año")):
+    #resultado = sentiment_analysis(año, df_sentimiento)
+    #return resultado
 
 #  -----------------------------
 
 
 # Modelo de Aprendizaje No Supervisado. RECOMENDACION.
 
-#item_similarities = cosine_similarity(df_recomendacion.drop(['item_name', 'item_id'], axis=1))
+item_similarities = cosine_similarity(df_recomendacion.drop(['item_name', 'item_id'], axis=1))
 
-#def recomendacion_juego(id_producto: int, num_recomendaciones: int = 5):
-    #idx = df_recomendacion[df_recomendacion['item_id'] == id_producto].index[0]
-    #sim_scores = list(enumerate(item_similarities[idx]))
-    #sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    #sim_scores = sim_scores[1:num_recomendaciones + 1]
-    #item_indices = [i[0] for i in sim_scores]
-    #recomendaciones = df_recomendacion['item_name'].iloc[item_indices].tolist()
-    #return recomendaciones
+def recomendacion_juego(id_producto: int, num_recomendaciones: int = 5):
+    idx = df_recomendacion[df_recomendacion['item_id'] == id_producto].index[0]
+    sim_scores = list(enumerate(item_similarities[idx]))
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+    sim_scores = sim_scores[1:num_recomendaciones + 1]
+    item_indices = [i[0] for i in sim_scores]
+    recomendaciones = df_recomendacion['item_name'].iloc[item_indices].tolist()
+    return recomendaciones
 
 # Ruta para la función recomendacion_juego
-#@app.get("/recommendation")
-#async def get_recommendation(id_producto: int = Query(..., title="ID del Producto"), num_recomendaciones: int = Query(5, title="Número de Recomendaciones")):
-    #recomendaciones = recomendacion_juego(id_producto, num_recomendaciones)
-    #return recomendaciones
+@app.get("/recommendation")
+async def get_recommendation(id_producto: int = Query(..., title="ID del Producto"), num_recomendaciones: int = Query(5, title="Número de Recomendaciones")):
+    recomendaciones = recomendacion_juego(id_producto, num_recomendaciones)
+    return recomendaciones
