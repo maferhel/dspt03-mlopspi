@@ -79,7 +79,7 @@ def userdata(User_id: str):
         #"Video Production", "Utilities", "Web Publishing", "Education", "Software Training", 
         #"Design & Illustration", "Audio Production", "Photo Editing", "Accounting", 'VR', 'Tutorial', 
         #'Golf', 'Horror', 'Lovecraftian', 'Survival Horror', 'First-Person', 'Based On A Novel', 'FPS'
-    ]
+    #]
     #genero_suma = {gen: 0 for gen in generos_unicos}
     #df_genre = df_genre[df_genre['genres'].notna()]
     #for index, row in df_genre.iterrows():
@@ -176,7 +176,7 @@ def userdata(User_id: str):
         #'Negative': sentiment_counts.get(0, 0),
         #'Neutral': sentiment_counts.get(1, 0),
         #'Positive': sentiment_counts.get(2, 0)
-    }
+    #}
 
     #return sentiment_dict
 
