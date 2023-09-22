@@ -136,55 +136,55 @@ df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  e
 
 # 5. Funcion contenido por desarrollador.
 
-def developer(desarrollador: str, df_developer: pd.DataFrame):
-    df_developer['release_date'] = pd.to_datetime(df_developer['release_date'], errors='coerce')
-    df_filtered = df_developer[df_developer['developer'] == desarrollador]
-    df_filtered = df_filtered.dropna(subset=['release_date'])
+#def developer(desarrollador: str, df_developer: pd.DataFrame):
+    #df_developer['release_date'] = pd.to_datetime(df_developer['release_date'], errors='coerce')
+    #df_filtered = df_developer[df_developer['developer'] == desarrollador]
+    #df_filtered = df_filtered.dropna(subset=['release_date'])
 
-    result_data = []
+    #result_data = []
 
-    for year in range(df_filtered['release_date'].min().year, df_filtered['release_date'].max().year + 1):
-        year_items = len(df_filtered[df_filtered['release_date'].dt.year == year])
-        year_free_items = len(df_filtered[(df_filtered['release_date'].dt.year == year) & (df_filtered['price'] == 0)])
+    #for year in range(df_filtered['release_date'].min().year, df_filtered['release_date'].max().year + 1):
+        #year_items = len(df_filtered[df_filtered['release_date'].dt.year == year])
+        #year_free_items = len(df_filtered[(df_filtered['release_date'].dt.year == year) & (df_filtered['price'] == 0)])
 
-        if year_items > 0:
-            free_percentage = (year_free_items / year_items) * 100
-        else:
-            free_percentage = 0
+        #if year_items > 0:
+            #free_percentage = (year_free_items / year_items) * 100
+        #else:
+            #free_percentage = 0
 
-        result_data.append({'Año': year, 'Cantidad de Ítems': year_items, 'Contenido Free': f'{free_percentage:.0f}%'})
+        #result_data.append({'Año': year, 'Cantidad de Ítems': year_items, 'Contenido Free': f'{free_percentage:.0f}%'})
 
-    result_df = pd.DataFrame(result_data)
+    #result_df = pd.DataFrame(result_data)
 
-    return result_df.to_dict(orient='records')
+    #return result_df.to_dict(orient='records')
 
 # Ruta para la función developer
-@app.get("/developer")
-async def get_developer_stats(desarrollador: str = Query(..., title="Nombre del Desarrollador")):
-    resultado = developer(desarrollador, df_developer)
-    return resultado
+#@app.get("/developer")
+#async def get_developer_stats(desarrollador: str = Query(..., title="Nombre del Desarrollador")):
+    #resultado = developer(desarrollador, df_developer)
+    #return resultado
 
 # --------------------------------
 
 # 6. Funcion cantidad de reseñas por año de lanzamiento.
 
-#def sentiment_analysis(año: int, df_sentimiento: pd.DataFrame):
-    #df_sentimiento['release_date'] = pd.to_datetime(df_sentimiento['release_date'], errors='coerce')
-    #df_reviews_filtered = df_sentimiento[df_sentimiento['release_date'].dt.year == año]
-    #sentiment_counts = df_reviews_filtered['sentiment_analysis'].value_counts()
-    #sentiment_dict = {
-        #'Negative': sentiment_counts.get(0, 0),
-        #'Neutral': sentiment_counts.get(1, 0),
-        #'Positive': sentiment_counts.get(2, 0)
-    #}
+def sentiment_analysis(año: int, df_sentimiento: pd.DataFrame):
+    df_sentimiento['release_date'] = pd.to_datetime(df_sentimiento['release_date'], errors='coerce')
+    df_reviews_filtered = df_sentimiento[df_sentimiento['release_date'].dt.year == año]
+    sentiment_counts = df_reviews_filtered['sentiment_analysis'].value_counts()
+    sentiment_dict = {
+        'Negative': sentiment_counts.get(0, 0),
+        'Neutral': sentiment_counts.get(1, 0),
+        'Positive': sentiment_counts.get(2, 0)
+    }
 
-    #return sentiment_dict
+    return sentiment_dict
 
 # Ruta para la función sentiment_analysis
-#@app.get("/sentiment")
-#async def get_sentiment_analysis(año: int = Query(..., title="Año")):
-    #resultado = sentiment_analysis(año, df_sentimiento)
-    #return resultado
+@app.get("/sentiment")
+async def get_sentiment_analysis(año: int = Query(..., title="Año")):
+    resultado = sentiment_analysis(año, df_sentimiento)
+    return resultado
 
 #  -----------------------------
 
