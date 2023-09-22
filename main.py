@@ -62,7 +62,7 @@ class DateRange(BaseModel):
     start_date: str
     end_date: str
 
-Ruta para la funcion countreviews
+#Ruta para la funcion countreviews
 @app.post("/countreviews", response_model=dict)
 async def get_review_counts(date_range: DateRange):
     result = countreviews(date_range.start_date, date_range.end_date)
