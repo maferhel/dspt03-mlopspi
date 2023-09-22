@@ -31,7 +31,7 @@ df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  e
 
 
 
-# 1. Función dinero gastado por usuario.
+# 1. Funcion dinero gastado por usuario.
 
 @app.get("/user/{user_id}", response_model=List[str])
 def userdata(User_id: str):
@@ -48,7 +48,7 @@ def userdata(User_id: str):
 
 # --------------------------------
 
-# 2. Función cantidad de usuarios que realizaron comentarios.
+# 2. Funcion cantidad de usuarios que realizaron comentarios.
 
 #def countreviews(start_date, end_date):
     #df_reviews = df_countreviews[df_countreviews["posted"].between(start_date, end_date)]
@@ -62,7 +62,7 @@ def userdata(User_id: str):
     #start_date: str
     #end_date: str
 
-# Ruta para la función countreviews
+# Ruta para la funcion countreviews
 #@app.post("/countreviews", response_model=dict)
 #async def get_review_counts(date_range: DateRange):
     #result = countreviews(date_range.start_date, date_range.end_date)
@@ -70,7 +70,7 @@ def userdata(User_id: str):
 
 # --------------------------------
 
-# 3. Función puesto por género.
+# 3. Funcion puesto por género.
 
 #def genre(genero: str, df_genre: pd.DataFrame):
     #generos_unicos = [
@@ -100,7 +100,7 @@ def userdata(User_id: str):
 
 # --------------------------------
 
-# 4. Función top 5 de usuarios con más horas de juego.
+# 4. Funcion top 5 de usuarios con más horas de juego.
 
 #def userforgenre(genero: str, df_genre_def: pd.DataFrame):
     #horas_por_usuario = {}
@@ -134,7 +134,7 @@ def userdata(User_id: str):
 
 # --------------------------------
 
-# 5. Función contenido por desarrollador.
+# 5. Funcion contenido por desarrollador.
 
 #def developer(desarrollador: str, df_developer: pd.DataFrame):
     #df_developer['release_date'] = pd.to_datetime(df_developer['release_date'], errors='coerce')
@@ -189,7 +189,7 @@ def userdata(User_id: str):
 #  -----------------------------
 
 
-# Modelo de Aprendizaje No Supervisado. RECOMENDACIÓN.
+# Modelo de Aprendizaje No Supervisado. RECOMENDACION.
 
 #item_similarities = cosine_similarity(df_recomendacion.drop(['item_name', 'item_id'], axis=1))
 
