@@ -50,53 +50,53 @@ df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  e
 
 #2. Funcion cantidad de usuarios que realizaron comentarios.
 
-def countreviews(start_date, end_date):
-    df_reviews = df_countreviews[df_countreviews["posted"].between(start_date, end_date)]
-    users_with_recommendations = df_reviews.groupby("user_id")["recommend"].sum()
-    users_count = len(users_with_recommendations)
-    recommendations_percentage = users_with_recommendations / users_count
+#def countreviews(start_date, end_date):
+    #df_reviews = df_countreviews[df_countreviews["posted"].between(start_date, end_date)]
+    #users_with_recommendations = df_reviews.groupby("user_id")["recommend"].sum()
+    #users_count = len(users_with_recommendations)
+    #recommendations_percentage = users_with_recommendations / users_count
 
-    return {"users": users_count, "recommendations": recommendations_percentage.mean(),}
+    #return {"users": users_count, "recommendations": recommendations_percentage.mean(),}
 
-class DateRange(BaseModel):
-    start_date: str
-    end_date: str
+#class DateRange(BaseModel):
+    #start_date: str
+    #end_date: str
 
 #Ruta para la funcion countreviews
-@app.post("/countreviews", response_model=dict)
-async def get_review_counts(date_range: DateRange):
-    result = countreviews(date_range.start_date, date_range.end_date)
-    return result
+#@app.post("/countreviews", response_model=dict)
+#async def get_review_counts(date_range: DateRange):
+    #result = countreviews(date_range.start_date, date_range.end_date)
+    #return result
 
 # --------------------------------
 
 # 3. Funcion puesto por género.
 
-#def genre(genero: str, df_genre: pd.DataFrame):
-    #generos_unicos = [
-        #"Action", "Casual", "Indie", "Simulation", "Strategy", "Free to Play", "RPG", "Sports", 
-        #"Adventure", "Racing", "Early Access", "Massively Multiplayer", "Animation & Modeling", 
-        #"Video Production", "Utilities", "Web Publishing", "Education", "Software Training", 
-        #"Design & Illustration", "Audio Production", "Photo Editing", "Accounting", 'VR', 'Tutorial', 
-        #'Golf', 'Horror', 'Lovecraftian', 'Survival Horror', 'First-Person', 'Based On A Novel', 'FPS'
-    #]
-    #genero_suma = {gen: 0 for gen in generos_unicos}
-    #df_genre = df_genre[df_genre['genres'].notna()]
-    #for index, row in df_genre.iterrows():
-        #generos = literal_eval(row['genres'])
-        #for g in generos:
-            #if g in generos_unicos:
-                #genero_suma[g] += row['playtime_forever']
-    #genero_suma_ordenado = dict(sorted(genero_suma.items(), key=lambda item: item[1], reverse=True))
-    #puesto = list(genero_suma_ordenado.keys()).index(genero)
+def genre(genero: str, df_genre: pd.DataFrame):
+    generos_unicos = [
+        "Action", "Casual", "Indie", "Simulation", "Strategy", "Free to Play", "RPG", "Sports", 
+        "Adventure", "Racing", "Early Access", "Massively Multiplayer", "Animation & Modeling", 
+        "Video Production", "Utilities", "Web Publishing", "Education", "Software Training", 
+        "Design & Illustration", "Audio Production", "Photo Editing", "Accounting", 'VR', 'Tutorial', 
+        'Golf', 'Horror', 'Lovecraftian', 'Survival Horror', 'First-Person', 'Based On A Novel', 'FPS'
+    ]
+    genero_suma = {gen: 0 for gen in generos_unicos}
+    df_genre = df_genre[df_genre['genres'].notna()]
+    for index, row in df_genre.iterrows():
+        generos = literal_eval(row['genres'])
+        for g in generos:
+            if g in generos_unicos:
+                genero_suma[g] += row['playtime_forever']
+    genero_suma_ordenado = dict(sorted(genero_suma.items(), key=lambda item: item[1], reverse=True))
+    puesto = list(genero_suma_ordenado.keys()).index(genero)
 
-    #return puesto + 1
+    return puesto + 1
 
 # Ruta para la función genre
-#@app.get("/genre")
-#async def get_genre_puesto(genero: str = Query(..., title="Género a consultar")):
-    #puesto = genre(genero, df_genre)
-    #return {"genero": genero, "puesto": puesto}
+@app.get("/genre")
+async def get_genre_puesto(genero: str = Query(..., title="Género a consultar")):
+    puesto = genre(genero, df_genre)
+    return {"genero": genero, "puesto": puesto}
 
 # --------------------------------
 
