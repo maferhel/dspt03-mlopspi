@@ -33,40 +33,40 @@ df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  e
 
 # 1. Funcion dinero gastado por usuario.
 
-@app.get("/user/{user_id}", response_model=List[str])
-def userdata(User_id: str):
-    user_data = df_userdata[df_userdata['user_id'] == User_id]
+#@app.get("/user/{user_id}", response_model=List[str])
+#def userdata(User_id: str):
+    #user_data = df_userdata[df_userdata['user_id'] == User_id]
     
-    if user_data.empty:
-        return f"User_id {User_id} inexistente", None, None
+    #if user_data.empty:
+        #return f"User_id {User_id} inexistente", None, None
     
-    money_spent = user_data['price'].sum() - user_data['discount_price'].sum()
-    recommendation_percentage = (user_data['recommend'].mean()) * 100
-    item_count = user_data['items_count'].values[0]
+    #money_spent = user_data['price'].sum() - user_data['discount_price'].sum()
+    #recommendation_percentage = (user_data['recommend'].mean()) * 100
+    #item_count = user_data['items_count'].values[0]
     
-    return f"Usuario: {User_id}", f"Dinero gastado: ${money_spent:.2f}", f"Porcentaje de recomendación: {recommendation_percentage:.2f}%", f"Cantidad de items: {item_count}"
+    #return f"Usuario: {User_id}", f"Dinero gastado: ${money_spent:.2f}", f"Porcentaje de recomendación: {recommendation_percentage:.2f}%", f"Cantidad de items: {item_count}"
 
 # --------------------------------
 
-# 2. Funcion cantidad de usuarios que realizaron comentarios.
+#2. Funcion cantidad de usuarios que realizaron comentarios.
 
-#def countreviews(start_date, end_date):
-    #df_reviews = df_countreviews[df_countreviews["posted"].between(start_date, end_date)]
-    #users_with_recommendations = df_reviews.groupby("user_id")["recommend"].sum()
-    #users_count = len(users_with_recommendations)
-    #recommendations_percentage = users_with_recommendations / users_count
+def countreviews(start_date, end_date):
+    df_reviews = df_countreviews[df_countreviews["posted"].between(start_date, end_date)]
+    users_with_recommendations = df_reviews.groupby("user_id")["recommend"].sum()
+    users_count = len(users_with_recommendations)
+    recommendations_percentage = users_with_recommendations / users_count
 
-    #return {"users": users_count, "recommendations": recommendations_percentage.mean(),}
+    return {"users": users_count, "recommendations": recommendations_percentage.mean(),}
 
-#class DateRange(BaseModel):
-    #start_date: str
-    #end_date: str
+class DateRange(BaseModel):
+    start_date: str
+    end_date: str
 
-# Ruta para la funcion countreviews
-#@app.post("/countreviews", response_model=dict)
-#async def get_review_counts(date_range: DateRange):
-    #result = countreviews(date_range.start_date, date_range.end_date)
-    #return result
+Ruta para la funcion countreviews
+@app.post("/countreviews", response_model=dict)
+async def get_review_counts(date_range: DateRange):
+    result = countreviews(date_range.start_date, date_range.end_date)
+    return result
 
 # --------------------------------
 
