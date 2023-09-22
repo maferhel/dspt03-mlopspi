@@ -72,65 +72,65 @@ df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  e
 
 # 3. Funcion puesto por género.
 
-def genre(genero: str, df_genre: pd.DataFrame):
-    generos_unicos = [
-        "Action", "Casual", "Indie", "Simulation", "Strategy", "Free to Play", "RPG", "Sports", 
-        "Adventure", "Racing", "Early Access", "Massively Multiplayer", "Animation & Modeling", 
-        "Video Production", "Utilities", "Web Publishing", "Education", "Software Training", 
-        "Design & Illustration", "Audio Production", "Photo Editing", "Accounting", 'VR', 'Tutorial', 
-        'Golf', 'Horror', 'Lovecraftian', 'Survival Horror', 'First-Person', 'Based On A Novel', 'FPS'
-    ]
-    genero_suma = {gen: 0 for gen in generos_unicos}
-    df_genre = df_genre[df_genre['genres'].notna()]
-    for index, row in df_genre.iterrows():
-        generos = literal_eval(row['genres'])
-        for g in generos:
-            if g in generos_unicos:
-                genero_suma[g] += row['playtime_forever']
-    genero_suma_ordenado = dict(sorted(genero_suma.items(), key=lambda item: item[1], reverse=True))
-    puesto = list(genero_suma_ordenado.keys()).index(genero)
+#def genre(genero: str, df_genre: pd.DataFrame):
+    #generos_unicos = [
+        #"Action", "Casual", "Indie", "Simulation", "Strategy", "Free to Play", "RPG", "Sports", 
+        #"Adventure", "Racing", "Early Access", "Massively Multiplayer", "Animation & Modeling", 
+        #"Video Production", "Utilities", "Web Publishing", "Education", "Software Training", 
+        #"Design & Illustration", "Audio Production", "Photo Editing", "Accounting", 'VR', 'Tutorial', 
+        #'Golf', 'Horror', 'Lovecraftian', 'Survival Horror', 'First-Person', 'Based On A Novel', 'FPS'
+    #]
+    #genero_suma = {gen: 0 for gen in generos_unicos}
+    #df_genre = df_genre[df_genre['genres'].notna()]
+    #for index, row in df_genre.iterrows():
+        #generos = literal_eval(row['genres'])
+        #for g in generos:
+            #if g in generos_unicos:
+                #genero_suma[g] += row['playtime_forever']
+    #genero_suma_ordenado = dict(sorted(genero_suma.items(), key=lambda item: item[1], reverse=True))
+    #puesto = list(genero_suma_ordenado.keys()).index(genero)
 
-    return puesto + 1
+    #return puesto + 1
 
 # Ruta para la función genre
-@app.get("/genre")
-async def get_genre_puesto(genero: str = Query(..., title="Género a consultar")):
-    puesto = genre(genero, df_genre)
-    return {"genero": genero, "puesto": puesto}
+#@app.get("/genre")
+#async def get_genre_puesto(genero: str = Query(..., title="Género a consultar")):
+    #puesto = genre(genero, df_genre)
+    #return {"genero": genero, "puesto": puesto}
 
 # --------------------------------
 
 # 4. Funcion top 5 de usuarios con más horas de juego.
 
-#def userforgenre(genero: str, df_genre_def: pd.DataFrame):
-    #horas_por_usuario = {}
-    #for index, row in df_genre_def.iterrows():
-        #generos = literal_eval(row['genres'])
-        #if genero in generos:
-            #user_id = row['user_id']
-            #playtime_forever = row['playtime_forever']
-            #if user_id in horas_por_usuario:
-                #horas_por_usuario[user_id] += playtime_forever
-            #else:
-                #horas_por_usuario[user_id] = playtime_forever
-    #top_usuarios = sorted(horas_por_usuario.items(), key=lambda item: item[1], reverse=True)[:5]
+def userforgenre(genero: str, df_genre_def: pd.DataFrame):
+    horas_por_usuario = {}
+    for index, row in df_genre_def.iterrows():
+        generos = literal_eval(row['genres'])
+        if genero in generos:
+            user_id = row['user_id']
+            playtime_forever = row['playtime_forever']
+            if user_id in horas_por_usuario:
+                horas_por_usuario[user_id] += playtime_forever
+            else:
+                horas_por_usuario[user_id] = playtime_forever
+    top_usuarios = sorted(horas_por_usuario.items(), key=lambda item: item[1], reverse=True)[:5]
 
-    #resultados = []
-    #for user_id, horas in top_usuarios:
-        #user_url = df_genre_def[df_genre_def['user_id'] == user_id]['user_url'].values[0]
-        #resultados.append({'user_id': user_id, 'horas_de_juego': horas, 'user_url': user_url})
+    resultados = []
+    for user_id, horas in top_usuarios:
+        user_url = df_genre_def[df_genre_def['user_id'] == user_id]['user_url'].values[0]
+        resultados.append({'user_id': user_id, 'horas_de_juego': horas, 'user_url': user_url})
 
-    #return resultados
+    return resultados
 
 # Clase de modelo para recibir los parámetros de entrada
-#class GenreQuery(BaseModel):
-    #genero: str
+class GenreQuery(BaseModel):
+    genero: str
 
 # Ruta para la función userforgenre
-#@app.get("/userforgenre")
-#async def get_top_users_by_genre(genero: str = Query(..., title="Género a consultar")):
-    #top_usuarios = userforgenre(genero, df_genre_def)
-    #return top_usuarios
+@app.get("/userforgenre")
+async def get_top_users_by_genre(genero: str = Query(..., title="Género a consultar")):
+    top_usuarios = userforgenre(genero, df_genre_def)
+    return top_usuarios
 
 # --------------------------------
 
