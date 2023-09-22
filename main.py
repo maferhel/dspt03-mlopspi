@@ -103,10 +103,10 @@ df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  e
 # 4. Funcion top 5 de usuarios con más horas de juego.
 
 #def userforgenre(genero: str, df_genre_def: pd.DataFrame):
-    "horas_por_usuario = {}
-    "for index, row in df_genre_def.iterrows():
-        "generos = literal_eval(row['genres'])
-        "if genero in generos:
+    #"horas_por_usuario = {}
+    #"for index, row in df_genre_def.iterrows():
+        #"generos = literal_eval(row['genres'])
+        #"if genero in generos:
             #user_id = row['user_id']
             #playtime_forever = row['playtime_forever']
             #if user_id in horas_por_usuario:
