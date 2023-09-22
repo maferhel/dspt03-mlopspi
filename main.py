@@ -14,19 +14,21 @@ app = FastAPI()
 
 # CARGA DE DATOS
 
-df_userdata = pd.read_csv('DATA/df_userdata.csv', low_memory= True, encoding='utf-8')
 
-df_countreviews = pd.read_csv('DATA/df_countreviews.csv',low_memory= True, encoding='utf-8')
+df_userdata = pd.read_csv('DATA/df_userdata.csv', low_memory= True,  encoding='utf-8')
 
-df_genre = pd.read_csv('DATA/df_genre.csv', low_memory= True, encoding='utf-8')
+df_countreviews = pd.read_csv('DATA/df_countreviews.csv',low_memory= True,  encoding='utf-8')
 
-df_genre_def = pd.read_csv('DATA/df_genre_def.csv', low_memory= True, encoding='utf-8')
+df_genre = pd.read_csv('DATA/df_genre.csv', low_memory= True,  encoding='utf-8')
 
-df_developer = pd.read_csv("DATA/df_developer.csv", low_memory= True, encoding='utf-8')
+df_genre_def = pd.read_csv('DATA/df_genre_def.csv', low_memory= True,  encoding='utf-8')
 
-df_sentimiento = pd.read_csv("DATA/df_sentimiento.csv", low_memory= True, encoding='utf-8')
+df_developer = pd.read_csv("DATA/df_developer.csv", low_memory= True,  encoding='utf-8')
 
-df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True, encoding='utf-8')
+df_sentimiento = pd.read_csv("DATA/df_sentimiento.csv", low_memory= True,  encoding='utf-8')
+
+df_recomendacion = pd.read_csv("DATA/df_recomendacion.csv", low_memory= True,  encoding='utf-8')
+
 
 
 # 1. Función dinero gastado por usuario.
